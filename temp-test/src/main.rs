@@ -14,17 +14,12 @@ async fn main() {
     // Initialize logging
     tracing_subscriber::fmt::init();
 
-    // データベース接続プールの作成
-    let pool = db::establish_connection().await;
-
-    // マイグレーションの実行
-    sqlx::migrate!("./migrations")
-        .run(&pool)
-        .await
-        .expect("Failed to migrate the database");
+    // データベース接続の作成
+    let db = db::establish_connection().await;
 
     // build our application with a single route
-    let app = routes::create_routes().with_state(pool.clone());
+
+    let app = routes::create_routes().with_state(db.clone());
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     println!("listening on {}", addr);
@@ -33,6 +28,5 @@ async fn main() {
         .unwrap();
 }
 
-async fn plain_text() -> &'static str {
-    "foo"
-}
+// async fn plain_text() -> &'static str { "foo"
+// }

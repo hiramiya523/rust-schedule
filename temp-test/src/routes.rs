@@ -1,7 +1,7 @@
 use crate::handlers::hello_handler;
 use axum::{Router, routing::get};
-use sqlx::PgPool;
+use sea_orm::DatabaseConnection;
 
-pub fn create_routes() -> Router<PgPool> {
+pub fn create_routes() -> Router<DatabaseConnection> {
     Router::new().route("/", get(hello_handler))
 }
