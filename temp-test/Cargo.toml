@@ -1,0 +1,14 @@
+[package]
+name = "temp-test"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8.3"
+dotenv = "0.15.0"
+serde = "1.0.219"
+sqlx = { version = "0.8.3", features = ["postgres", "runtime-tokio"] }
+tokio = { version = "1.44.2", features = ["full"] }
+tracing-subscriber = "0.3.19"
+chrono = { version = "0.4", features = ["serde"] }
+sea-orm = { version = "0.12", features = ["sqlx-postgres", "runtime-tokio-native-tls", "macros"] }
