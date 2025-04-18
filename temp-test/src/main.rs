@@ -1,38 +1,42 @@
-mod db;
+mod config;
+// mod db;
+mod entities;
 mod handlers;
 mod models;
 mod routes;
 
-use dotenv::dotenv;
-use std::net::SocketAddr;
+use std::net::{IpAddr, SocketAddr};
 
 #[tokio::main]
 async fn main() {
-    // Load .env file
-    dotenv().ok();
+    // 設定の読み込み
+    let config = config::Config::load();
 
-    // Initialize logging
+    // ロギングの初期化
     tracing_subscriber::fmt::init();
 
-    // データベース接続プールの作成
-    let pool = db::establish_connection().await;
+    // データベース接続の作成（設定で有効な場合）
+    // let db = if config.database.enabled {
+    //     Some(db::establish_connection().await)
+    // } else {
+    //     None
+    // };
 
-    // マイグレーションの実行
-    sqlx::migrate!("./migrations")
-        .run(&pool)
-        .await
-        .expect("Failed to migrate the database");
+    // アプリケーションの構築
+    let app = routes::create_routes();
+    // let app = if let Some(db) = db {
+    //     routes::create_routes().with_state(db)
+    // } else {
+    //     routes::create_routes()
+    // };
 
-    // build our application with a single route
-    let app = routes::create_routes().with_state(pool.clone());
-
-    let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
+    // サーバーの起動
+    let addr = SocketAddr::new(
+        config.server.host.parse::<IpAddr>().unwrap(),
+        config.server.port,
+    );
     println!("listening on {}", addr);
     axum::serve(tokio::net::TcpListener::bind(addr).await.unwrap(), app)
         .await
         .unwrap();
-}
-
-async fn plain_text() -> &'static str {
-    "foo"
 }

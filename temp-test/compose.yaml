@@ -1,12 +1,13 @@
 services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - DATABASE_URL=postgres://postgres:password@db:5432/mydatabase
-    depends_on:
-      - db
+# Rustってdockerいるのか．．．？コンパイルするだろ？
+  # app:
+  #   build: .
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - DATABASE_URL=postgres://postgres:password@db:5432/mydatabase
+  #   depends_on:
+  #     - db
 
   db:
     image: postgres:15
