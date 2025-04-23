@@ -1,7 +1,6 @@
 mod config;
-mod routes;
-
 mod handlers;
+mod routes;
 use std::net::{IpAddr, SocketAddr};
 
 #[tokio::main]

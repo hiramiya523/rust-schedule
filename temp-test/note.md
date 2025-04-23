@@ -37,8 +37,25 @@ psql -h localhost -U postgres -d mydatabase
 psql -U postgres -d mydatabase
 ```
 
-### テーブルの作成
+データベースの一覧
 
+```bash
+\l
+```
+
+テーブルの一覧
+
+```bash
+\d
+```
+
+テーブルの詳細
+
+```bash
+\d テーブル名
+```
+
+### テーブルの作成
 ```bash
 CREATE TABLE posts (
 ```
