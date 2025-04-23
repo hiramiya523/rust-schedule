@@ -1,10 +1,7 @@
 mod config;
-// mod db;
-mod entities;
-mod handlers;
-mod models;
 mod routes;
 
+mod handlers;
 use std::net::{IpAddr, SocketAddr};
 
 #[tokio::main]
@@ -13,14 +10,7 @@ async fn main() {
     let config = config::Config::load();
 
     // ロギングの初期化
-    tracing_subscriber::fmt::init();
-
-    // データベース接続の作成（設定で有効な場合）
-    // let db = if config.database.enabled {
-    //     Some(db::establish_connection().await)
-    // } else {
-    //     None
-    // };
+    // tracing_subscriber::fmt::init();
 
     // アプリケーションの構築
     let app = routes::create_routes();
