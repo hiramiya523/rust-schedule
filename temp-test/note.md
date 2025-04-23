@@ -28,13 +28,19 @@ sea-orm-cli migrate generate create_posts_table
 sea-orm-cli migrate run
 ```
 
+sea-ormのインストール
+
+```bash
+cargo add sea-orm --features sqlx-postgres tokio macros
+```
+
 ## postgres
 
 ### 接続
 
 ```bash
-psql -h localhost -U postgres -d mydatabase
-psql -U postgres -d mydatabase
+psql -h localhost -U postgres -d rust_schedule
+psql -U postgres -d rust_schedule
 ```
 
 データベースの一覧

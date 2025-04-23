@@ -5,9 +5,24 @@ edition = "2024"
 
 [dependencies]
 axum = "0.8.3"
-dotenv = "0.15.0"
 serde = { version = "1.0.219", features = ["derive"] }
-tokio = { version = "1.44.2", features = ["full"] }
-tracing-subscriber = "0.3.19"
-chrono = { version = "0.4", features = ["serde"] }
 toml = "0.8.20"
+tokio = { version = "1.44.2", features = ["full"] }
+# tracingはtokioと相性がいいかつ、デファクトスタンダードらしい？
+# https://zenn.dev/taiki45/books/pragmatic-rust-application-development/viewer/tracing
+# https://techblog.paild.co.jp/entry/2024/04/02/144212
+# tokioのような非同期処理を行うシステムでは、従来のログの読み取りは大変困難を伴います。主にはログ同士の因果関係の把握が難しいという困難性を伴います。というのも、tokioが管理する個々の「タスク」は多重化されており、
+# tracingは、tokioと相性がいい？
+# tokioのような非同期処理を行うシステムでは、従来のログの読み取りは大変困難を伴います。主にはログ同士の因果関係の把握が難しいという困難性を伴います。というのも、tokioが管理する個々の「タスク」は多重化されており、それによってタスクから書き出されたログ同士の流れが逐次的にならないためです。つまり、どのログが何の処理のあとに書き出されたものかを判定するのが非同期処理性によって困難になっているのが現代の非同期処理を用いるアプリケーションの抱える課題である 読んで:
+#それによってタスクから書き出されたログ同士の流れが逐次的にならないためです。つまり、どのログが何の処理のあとに書き出されたものかを判定するのが非同期処理性によって困難になっているのが現代の非同期処理を用いるアプリケーションの抱える課題である
+tracing = "0.1.41"
+# sea_ormでログを出力するにはtracing-subscriberが必要
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+chrono = { version = "0.4", features = ["serde"] }
+# runtime-tokio-rustlsとruntime-tokio-native-tlsのどちらを使うかは、要件次第？
+sea-orm = { version = "1.1.10", features = ["macros", "sqlx-postgres", "runtime-tokio-native-tls"] }
+
+# dev-dependenciesは、Rustプロジェクトの開発中にのみ必要とされる依存パッケージを指定します。
+# これらは通常、テストやビルドスクリプトのために必要なツールやライブラリを含みますが、プロジェクトの本番ビルドには含まれません。
+[dev-dependencies]
+sea-orm-cli = "1.1.10"

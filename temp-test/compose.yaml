@@ -13,7 +13,7 @@ services:
     image: postgres:15
     environment:
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=mydatabase
+      - POSTGRES_DB=rust_schedule
     ports:
       - "5432:5432"
     volumes:
